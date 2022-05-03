@@ -34,7 +34,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i><span>Home</span></a><a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'alerts' %}"><i class="fa fa-bell"></i><span>Alerts</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'details' %}"><i class="fas fa-table"></i><span>View Details</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'login' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'signin' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
                     <li class="nav-item"></li>
                     <li class="nav-item"></li>
                     <li class="nav-item"></li>
@@ -129,8 +129,8 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fa fa-user-circle-o" style="width: 16px;"></i><span class="d-none d-lg-inline me-2 text-gray-600 small">&nbsp; Counter 2</span></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a></div>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fa fa-user-circle-o" style="width: 16px;"></i><span class="d-none d-lg-inline me-2 text-gray-600 small">&nbsp; {{username}}</span></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="{% url 'signout' %}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a></div>
                                 </div>
                             </li>
                         </ul>

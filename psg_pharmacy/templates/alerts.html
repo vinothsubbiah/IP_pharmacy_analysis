@@ -25,7 +25,7 @@
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#"><img src="assets/img/android-chrome-192x192.png" style="width: 59px;">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#"><img src="{% static 'img/android-chrome-192x192.png' %}" style="width: 59px;">
                     <div class="sidebar-brand-icon rotate-n-15"></div>
                     <div class="sidebar-brand-text mx-3"><span>Pharmacy</span></div>
                 </a>
@@ -34,7 +34,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i><span>Home</span></a><a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link active" href="{% url 'alerts' %}"><i class="fa fa-bell"></i><span>Alerts</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'details' %}"><i class="fas fa-table"></i><span>View Details</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'login' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'signin' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
                     <li class="nav-item"></li>
                     <li class="nav-item"></li>
                     <li class="nav-item"></li>
@@ -91,7 +91,7 @@
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="{% static 'img/avatars/avatar4.jpeg' %}">
                                                 <div class="bg-success status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -99,7 +99,7 @@
                                                 <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="{% static 'img/avatars/avatar2.jpeg' %}">
                                                 <div class="status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -107,7 +107,7 @@
                                                 <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="{% static 'img/avatars/avatar3.jpeg' %}">
                                                 <div class="bg-warning status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -115,7 +115,7 @@
                                                 <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
                                             </div>
                                         </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
+                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="{% static 'img/avatars/avatar5.jpeg' %}">
                                                 <div class="bg-success status-indicator"></div>
                                             </div>
                                             <div class="fw-bold">
@@ -129,14 +129,14 @@
                             </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fa fa-user-circle-o" style="width: 16px;"></i><span class="d-none d-lg-inline me-2 text-gray-600 small">&nbsp; Counter 2</span></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a></div>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fa fa-user-circle-o" style="width: 16px;"></i><span class="d-none d-lg-inline me-2 text-gray-600 small">&nbsp; {{username}}</span></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="{% url 'signout' %}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a></div>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </nav><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
-<link rel="stylesheet" href="assets/css/alert.css">
+<link rel="stylesheet" href="{% static 'css/alert.css' %}">
 <div class="container">
 <section class="content inbox">
     <div class="container-fluid">
@@ -179,7 +179,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar1.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar1.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -201,7 +201,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite col-amber hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar2.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar2.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -223,7 +223,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar3.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar3.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -245,7 +245,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar4.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar4.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -267,7 +267,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar5.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar5.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -289,7 +289,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite col-amber hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar6.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar6.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -311,7 +311,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite col-amber hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar7.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar7.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -333,7 +333,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite col-amber hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar8.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar8.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -355,7 +355,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar9.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar9.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -377,7 +377,7 @@
                                     </div>
                                     <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
                                 </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="assets/images/xs/avatar10.jpg" class="rounded-circle" alt=""> </div>
+                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar10.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
@@ -415,8 +415,8 @@
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="{% static 'js/bs-init.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
 </body>
 
 </html>
