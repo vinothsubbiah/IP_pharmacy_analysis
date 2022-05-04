@@ -33,17 +33,17 @@ def signin(request):
         user = authenticate(username=username,password=pass1)
         print(user)
         if user is not None:
-            print("1")
+            #print("1")
             login(request,user)
             name = user.username
             return render(request, 'index.html', {'username': name})
 
         else:
-            print("2")
+            #print("2")
             messages.error(request, 'Bad credentaials')
 
             return redirect('signin')
-    print("3")
+    #print("3")
     return render(request, "login.html")
 
 def dashboard(request):
