@@ -15,11 +15,13 @@
       <div class="row">
         {% for m in message %}
         <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+          {% if m.to_user == request.user.username %}
           <div class="card h-100 p-4">
             <h4>{{m.message}}</h4>
             <p class="text-muted">{{m.from_user}} | {{m.director}}</p>
             <p>{{m.movie_plot}}</p>
           </div>
+          {% endif %}
         </div>
         {% endfor %}
       </div>

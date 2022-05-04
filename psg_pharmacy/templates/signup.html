@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>SignUp</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        {% block content%}
+        <h1>SignUp</h1>
+        <form action="/signup" method="post">
+        {%csrf_token%}
+            <label for="">Username</label>
+            <input type="text" id="username" name="username" placeholder="Create a username" Required>
+            <br>
+            <label for="">Password</label>
+            <input type="password" id="pass1" name="pass1" placeholder="Enter password (len > 8)" Required>
+            <br>
+            <label for="">Confirm Password</label>
+            <input type="password" id="pass2" name="pass2" placeholder="Renter password" Required>
+            <br>
+            <label for="">Role</label>
+            <input type="text" id="role" name="role" placeholder="Enter user role" Required>
+            <br>
+            <button type="submit">SignUp</button>
+        </form>
+        {% endblock%}
+        <script src="" async defer></script>
+    </body>
+</html>

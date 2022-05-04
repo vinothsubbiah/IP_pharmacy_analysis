@@ -16,9 +16,10 @@ def signup(request):
         username = request.POST['username']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
+        role = request.POST['role']
 
         if(pass1==pass2):
-            Myuser = User.objects.create_user(username,pass1)
+            Myuser = User.objects.create_user(username,pass1,role)
             Myuser.save()
             messages.success(request,'Account created!')
             return redirect("signin")
@@ -37,6 +38,9 @@ def signin(request):
             #print("1")
             login(request,user)
             name = user.username
+            role = user.email
+            print(role)
+            print("BATMAN!!")
             return render(request, 'index.html', {'username': name})
 
         else:
