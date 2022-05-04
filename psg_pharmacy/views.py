@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 from django.http import HttpResponse
 from django.urls import reverse
+from .models import Messages
 
 
 
@@ -91,6 +92,19 @@ def alerts_info(request):
         return render(request, 'alerts-info.html', {'username': name})
     else:
         return render(request, "login.html")
+
+
+def messaiah(request):
+    
+    if request.user.is_authenticated:
+        message = Messages.objects.all()
+        for m in message:
+            if request.user.username == m.to_user:
+                print("its me ",request.user)
+                return render(request, "m.html",context={"message" : message})
+    else:
+        return render(request, "login.html")
+
     
 
 def signout(request):
