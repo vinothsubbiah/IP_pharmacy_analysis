@@ -19,6 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     #path('psg/', include('django.contrib.auth.urls')),
     path('psg/', include('psg_pharmacy.urls')),
+    # path('', include('psg_pharmacy.urls')),
     #path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('admin/', admin.site.urls),
 ]
