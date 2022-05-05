@@ -77,7 +77,16 @@ def details(request):
 def alerts(request):
     if request.user.is_authenticated:
         name = request.user.username
-        return render(request, 'alerts.html', {'username': name})
+        message = Messages.objects.all()
+        for m in message:
+            if request.user.username == m.to_user:
+                print("its me ",request.user)
+                return render(request, 'alerts.html', {'username': name,"message" : message})
+            # else:
+            #     m.message = "No messages"
+            #     print("No messages")
+            #     return render(request, 'alerts.html', {'username': name,"message" : message})
+
     else:
         return render(request, "login.html")
     
@@ -105,7 +114,7 @@ def messaiah(request):
         for m in message:
             if request.user.username == m.to_user:
                 print("its me ",request.user)
-                return render(request, "m.html",context={"message" : message})
+                return render(request, "alerts.html",context={"message" : message})
     else:
         return render(request, "login.html")
 
