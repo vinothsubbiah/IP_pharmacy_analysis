@@ -79,8 +79,10 @@ def alerts(request):
         name = request.user.username
         message = Messages.objects.all()
         for m in message:
-            if request.user.username == m.to_user:
+            if request.user.username == "admin":
                 print("its me ",request.user)
+                return render(request, 'alerts.html', {'username': name,"message" : message})
+            elif request.user.username == m.to_user:
                 return render(request, 'alerts.html', {'username': name,"message" : message})
             # else:
             #     m.message = "No messages"
