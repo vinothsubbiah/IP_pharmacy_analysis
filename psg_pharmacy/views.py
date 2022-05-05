@@ -116,7 +116,7 @@ def messaiah(request):
         for m in message:
             if request.user.username == m.to_user:
                 print("its me ",request.user)
-                return render(request, "alerts.html",context={"message" : message})
+                return render(request, "m.html",context={"message" : message})
     else:
         return render(request, "login.html")
 
