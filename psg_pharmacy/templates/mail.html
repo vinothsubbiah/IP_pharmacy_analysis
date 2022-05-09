@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Dashboard</title>
+    <title>Blank Page - Brand</title>
     <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
@@ -16,22 +16,22 @@
     <link rel="stylesheet" href="{% static 'css/Nunito.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'fonts/fontawesome5-overrides.min.css'%}">
-    <link rel="stylesheet" href="{% static 'css/alert.css'%}">
-    <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider-1.css'%}">
-    <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider.css'%}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome5-overrides.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/alert.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider-1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider.css' %}">
 </head>
 
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#"><img src="{% static 'img/android-chrome-192x192.png' %}" style="width: 59px;">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="{% url 'index' %}"><img src="{% static 'img/android-chrome-192x192.png' %}" style="width: 59px;">
                     <div class="sidebar-brand-icon rotate-n-15"></div>
                     <div class="sidebar-brand-text mx-3"><span>Pharmacy</span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i><span>Home</span></a><a class="nav-link active" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i><span>Home</span></a><a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'alerts' %}"><i class="fa fa-bell"></i><span>Alerts</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'details' %}"><i class="fas fa-table"></i><span>View Details</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'signin' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
@@ -62,28 +62,27 @@
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                        
+                                        <h6 class="dropdown-header">alerts center</h6>
+                                        {% for m in message %}
+                                            {% if m.to_user == request.user.username %}
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            
                                             <div class="me-3">
                                                 <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
                                             </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
+                                            
+                                            <div>
+                                                
+                                                    <span class="small text-gray-500">{{m.from_user}}</span>
+                                                    <p>{{m.message}}</p>
+                                                
                                             </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                           
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                        <a class="dropdown-item text-center small text-gray-500" href="{% url 'alerts' %}">Show All Alerts</a>
                                     </div>
                                 </div>
                             </li>
@@ -136,9 +135,20 @@
                         </ul>
                     </div>
                 </nav>
-                <div>
-                    <iframe title="psg" width="100%" height="565" src={{url1}} frameborder="0" allowFullScreen="true"></iframe>
-                    
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-1" style="text-align: center;">Compose New Mail</h3>
+                    <form class="user" action="{% url 'sendMail' %}" method ="post">
+                        {% csrf_token %}
+                            <div class="mb-3"><input class="form-control form-control-user" type="text" id="from_user" aria-describedby="emailHelp" value={{username}} name="from_user" readonly></div>
+                            <div class="mb-3"><input class="form-control form-control-user" type="text" id="to_user" placeholder="to user" name="to_user" required></div>
+                            <div class="mb-3"><input class="form-control form-control-user" type="text" id="body" aria-describedby="emailHelp" placeholder="Type content here" name="body" required></div>
+                            <!-- <div class="mb-3"><input class="form-control form-control-user" type="password" id="pass1" placeholder="Password" name="password"></div> -->
+                            
+                            <hr>
+                            <div class="mb-3">
+                                <div class="custom-control custom-checkbox small"></div>
+                            </div><button class="btn btn-primary d-block btn-user w-100" type="submit" style="font-size: 19.8px;">Send</button>
+                        </form>
                 </div>
             </div>
             <footer class="bg-white sticky-footer">
@@ -149,7 +159,6 @@
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="{% static 'js/bs-init.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
 </body>

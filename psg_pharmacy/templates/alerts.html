@@ -25,7 +25,7 @@
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#"><img src="{% static 'img/android-chrome-192x192.png' %}" style="width: 59px;">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="{% url 'index' %}"><img src="{% static 'img/android-chrome-192x192.png' %}" style="width: 59px;">
                     <div class="sidebar-brand-icon rotate-n-15"></div>
                     <div class="sidebar-brand-text mx-3"><span>Pharmacy</span></div>
                 </a>
@@ -62,28 +62,27 @@
                             <li class="nav-item dropdown no-arrow mx-1">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                        
+                                        <h6 class="dropdown-header">alerts center</h6>
+                                        {% for m in message %}
+                                            {% if m.to_user == request.user.username %}
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                            
                                             <div class="me-3">
                                                 <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
                                             </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
+                                            
+                                            <div>
+                                                
+                                                    <span class="small text-gray-500">{{m.from_user}}</span>
+                                                    <p>{{m.message}}</p>
+                                                
                                             </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                           
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                        <a class="dropdown-item text-center small text-gray-500" href="{% url 'alerts' %}">Show All Alerts</a>
                                     </div>
                                 </div>
                             </li>
@@ -170,234 +169,41 @@
             <div class="col-md-12 col-lg-12 col-xl-12">
                 <ul class="mail_list list-group list-unstyled">
                     <!-- Start of dabba -->
+                    {% for m in message %}
                     <li class="list-group-item">
+                        
                         <div class="media">
+                            {% if m.to_user == request.user.username %}
                             <div class="pull-left">                                
                                 <div class="controls">
                                     <div class="checkbox">
                                         <input type="checkbox" id="basic_checkbox_1">
                                         <label for="basic_checkbox_1"></label>
                                     </div>
-                                    <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
+                                    <!-- <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a> -->
                                 </div>
                                 <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar1.jpg' %}" class="rounded-circle" alt=""> </div>
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Velit a labore</a>
-                                    <span class="badge bg-blue">Family</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
+                                    <a href="alerts-info.html" class="m-r-10">{{m.message}}</a>
+                                    <span class="badge bg-blue">{{m.from_user}}</span>
+                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">{{m.time}}</time></small>
                                 </div>
                                 <p class="msg"></p>
                             </div>
+                            
                         </div>
-                    </li>
-                    <!-- ENd of dabba -->
-                    <li class="list-group-item unread">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_2">
-                                        <label for="basic_checkbox_2"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite col-amber hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar2.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Simply dummy text</a>
-                                    <span class="badge bg-amber">Shop</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>                                
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_3">
-                                        <label for="basic_checkbox_3"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar3.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Velit a labore</a>
-                                    <span class="badge bg-red">Google</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg"> If you are going to use a passage of Lorem Ipsum, you need to be sure</p>                                
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item unread">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_4">
-                                        <label for="basic_checkbox_4"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar4.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Variations of passages</a>
-                                    <span class="badge bg-blush">Themeforest</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg">There are many variations of passages of Lorem Ipsum available, but the majority </p>                                
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_5">
-                                        <label for="basic_checkbox_5"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar5.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Generators on the Internet</a>
-                                    <span class="badge bg-green">Work</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg">LAll the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary</p>                                
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_6">
-                                        <label for="basic_checkbox_6"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite col-amber hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar6.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Contrary to popular</a>
-                                    <span class="badge bg-blush">Themeforest</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_7">
-                                        <label for="basic_checkbox_7"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite col-amber hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar7.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Velit a labore</a>
-                                    <span class="badge bg-green">Work</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg">Lorem Ipsum is simply dumm dummy text of the printing and typesetting industry. </p>                                
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_8" checked="">
-                                        <label for="basic_checkbox_8"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite col-amber hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar8.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Variations of passages</a>
-                                    <span class="badge bg-blush">Themeforest</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg">There are many variations of passages of Lorem Ipsum available, but the majority </p>                                
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_9">
-                                        <label for="basic_checkbox_9"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar9.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Generators on the Internet</a>
-                                    <span class="badge bg-green">Work</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg">LAll the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary</p>                                
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="pull-left">
-                                <div class="controls">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="basic_checkbox_10">
-                                        <label for="basic_checkbox_10"></label>
-                                    </div>
-                                    <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-star-outline"></i></a>
-                                </div>
-                                <div class="thumb hidden-sm-down m-r-20"> <img src="{% static 'images/xs/avatar10.jpg' %}" class="rounded-circle" alt=""> </div>
-                            </div>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a href="alerts-info.html" class="m-r-10">Velit a labore</a>
-                                    <span class="badge bg-blue">Family</span>
-                                    <small class="float-right text-muted"><time class="hidden-sm-down" datetime="2017">12:35 AM</time><i class="zmdi zmdi-attachment-alt"></i> </small>
-                                </div>
-                                <p class="msg">Lorem Ipsum is simply dumm dummy text of the printing and typesetting industry. </p>
-                            </div>
-                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </li>
                 </ul>
                 <div class="card m-t-5">
                     <div class="body">
                         <ul class="pagination pagination-primary m-b-0">
                             <li class="page-item"><a class="page-link" href="javascript:void(0);">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="javascript:void(0);">2</a></li>
+                            <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+                            <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
                             <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
                             <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
                         </ul>
