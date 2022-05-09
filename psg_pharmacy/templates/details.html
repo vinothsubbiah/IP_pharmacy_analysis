@@ -46,9 +46,9 @@
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <!-- <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-                        </form>
+                        </form> -->
                         <ul class="navbar-nav flex-nowrap ms-auto">
                             <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
@@ -60,7 +60,7 @@
                                 </div>
                             </li>
                             <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         
                                         <h6 class="dropdown-header">alerts center</h6>
@@ -87,41 +87,21 @@
                                 </div>
                             </li>
                             <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="{% static 'img/avatars/avatar4.jpeg' %}">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
+                                        <h6 class="dropdown-header">mails center</h6>
+                                        {% for m in mail %}
+                                        {% if m.to_user == request.user.username %}
+                                        <a class="dropdown-item d-flex align-items-center" href="#">
+                                           
                                             <div class="fw-bold">
-                                                <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
-                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
+                                                <div class="text-truncate"><span>{{m.body}}</span></div>
+                                                <p class="small text-gray-500 mb-0">From : {{m.from_user}}</p>
                                             </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="{% static 'img/avatars/avatar2.jpeg' %}">
-                                                <div class="status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
-                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="{% static 'img/avatars/avatar3.jpeg' %}">
-                                                <div class="bg-warning status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
-                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="{% static 'img/avatars/avatar5.jpeg' %}">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
-                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                        </a>
+                                        {% endif %}
+                                        {% endfor %}
+                                        <a class="dropdown-item text-center small text-gray-500" href="{% url 'requests' %}">Show All Mails</a>
                                     </div>
                                 </div>
                                 <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
@@ -139,21 +119,21 @@
                     <h3 class="text-dark mb-4">Drug Status</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Counter - 2</p>
+                            <p class="text-primary m-0 fw-bold">Counter - {{request.user.first_name}}</p>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6 text-nowrap">
+                                <!-- <div class="col-md-6 text-nowrap">
                                     <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
                                                 <option value="10" selected="">10</option>
                                                 <option value="25">25</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
                                             </select>&nbsp;</label></div>
-                                </div>
-                                <div class="col-md-6">
+                                </div> -->
+                                <!-- <div class="col-md-6">
                                     <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                                 <table class="table my-0" id="dataTable">
@@ -163,115 +143,105 @@
                                             <th>Category</th>
                                             <th>Counter</th>
                                             <th>Quantity</th>
-                                            <th>Exp. date</th>
-                                            <th>Status</th>
+                                            <th>Drug Code</th>
+                                            <th>Drug Type</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar1.jpeg' %}">Dolo -650</td>
-                                            <td>Tablet</td>
-                                            <td>2</td>
-                                            <td>33</td>
-                                            <td>2022/06/28</td>
-                                            <td>Normal</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar2.jpeg' %}">Grilinctus</td>
-                                            <td>Syrup</td>
-                                            <td>2</td>
-                                            <td>47</td>
-                                            <td>2022/07/09<br></td>
-                                            <td>Normal</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar3.jpeg' %}">Azac -500</td>
-                                            <td>Tablet</td>
-                                            <td>2</td>
+                                            <td>AZORAN -25MG TAB</td>
+                                            <td>General Medicines</td>
                                             <td>6</td>
-                                            <td>2022/05/12<br></td>
-                                            <td>Critical</td>
+                                            <td>30</td>
+                                            <td>AZOR002</td>
+                                            <td>Tablets</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar4.jpeg' %}">Bradley Greer</td>
-                                            <td>Software Engineer</td>
-                                            <td>London</td>
+                                            <td>FEBRINIL INJ 3ML AMP</td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
+                                            <td>47</td>
+                                            <td>FEBR001<br></td>
+                                            <td>Injection</td>
+                                        </tr>
+                                        <tr>
+                                            <td>PENEGRA 50 MG TAB</td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
+                                            <td>66</td>
+                                            <td>PENE001<br></td>
+                                            <td>Tablets</td>
+                                        </tr>
+                                        <tr>
+                                            <td>EPTOIN 50 MG TAB</td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
                                             <td>41</td>
-                                            <td>2012/10/13<br></td>
-                                            <td>$132,000</td>
+                                            <td>EPTO002<br></td>
+                                            <td>Tablets</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar5.jpeg' %}">Brenden Wagner</td>
-                                            <td>Software Engineer</td>
-                                            <td>San Francisco</td>
+                                            <td>REPALOL TAB</td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
                                             <td>28</td>
-                                            <td>2011/06/07<br></td>
-                                            <td>$206,850</td>
+                                            <td>REPA006<br></td>
+                                            <td>Tablets</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar1.jpeg' %}">Brielle Williamson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>New York</td>
+                                            <td>TONACT 80MG TAB</td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
                                             <td>61</td>
-                                            <td>2012/12/02<br></td>
-                                            <td>$372,000</td>
+                                            <td>TONA010<br></td>
+                                            <td>Tablets</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar2.jpeg' %}">Bruno Nash<br></td>
-                                            <td>Software Engineer</td>
-                                            <td>London</td>
+                                            <td>AUGMENTIN 375 MG DUO TAB<br></td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
                                             <td>38</td>
-                                            <td>2011/05/03<br></td>
-                                            <td>$163,500</td>
+                                            <td>AUGM002<br></td>
+                                            <td>Tablets</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar3.jpeg' %}">Caesar Vance</td>
-                                            <td>Pre-Sales Support</td>
-                                            <td>New York</td>
+                                            <td>POLYBION CZS TAB</td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
                                             <td>21</td>
-                                            <td>2011/12/12<br></td>
-                                            <td>$106,450</td>
+                                            <td>POLY020<br></td>
+                                            <td>Tablets</td>
                                         </tr>
                                         <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar4.jpeg' %}">Cara Stevens</td>
-                                            <td>Sales Assistant</td>
-                                            <td>New York</td>
+                                            <td>ELTROXIN 50 MCG TAB</td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
                                             <td>46</td>
-                                            <td>2011/12/06<br></td>
-                                            <td>$145,600</td>
+                                            <td>ELTR002<br></td>
+                                            <td>Tablets</td>
                                         </tr>
-                                        <tr>
-                                            <td><img class="rounded-circle me-2" width="30" height="30" src="{% static 'img/avatars/avatar5.jpeg' %}">Cedric Kelly</td>
-                                            <td>Senior JavaScript Developer</td>
-                                            <td>Edinburgh</td>
+                                        <tr><td>VENFLON 20G</td>
+                                            <td>General Medicines</td>
+                                            <td>6</td>
                                             <td>22</td>
-                                            <td>2012/03/29<br></td>
-                                            <td>$433,060</td>
+                                            <td>VENF003<br></td>
+                                            <td>Tablets</td>
                                         </tr>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td>Drug&nbsp;<strong>Name</strong></td>
-                                            <td><strong>Category</strong></td>
-                                            <td><strong>Counter</strong></td>
-                                            <td><strong>Quantity</strong></td>
-                                            <td><strong>Exp. date</strong></td>
-                                            <td><strong>Status</strong></td>
-                                        </tr>
-                                    </tfoot>
+
                                 </table>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 align-self-center">
+                                <!-- <div class="col-md-6 align-self-center">
                                     <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
-                                </div>
+                                </div> -->
                                 <div class="col-md-6">
                                     <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                                         <ul class="pagination">
                                             <li class="page-item disabled"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                            <!-- <li class="page-item active"><a class="page-link" href="#">1</a></li>
                                             <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li> -->
                                             <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
                                         </ul>
                                     </nav>
