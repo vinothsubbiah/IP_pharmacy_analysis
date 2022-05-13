@@ -84,7 +84,9 @@ def dashboard(request):
         elif int(request.user.first_name) == 8:
             url1 = "https://app.powerbi.com/reportEmbed?reportId=a548249c-12db-4518-a893-83b6b3101c0e&autoAuth=true&ctid=858dc6a1-05e7-48c7-8a2b-4172a00a524a&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWluZGlhLWNlbnRyYWwtYS1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9"
         elif int(request.user.first_name) == 9:
-            url1 = "https://app.powerbi.com/reportEmbed?reportId=6dca31f6-165b-4d01-8e29-086e15811e91&autoAuth=true&ctid=858dc6a1-05e7-48c7-8a2b-4172a00a524a&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWluZGlhLWNlbnRyYWwtYS1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
+            url1 = "https://app.powerbi.com/reportEmbed?reportId=6dca31f6-165b-4d01-8e29-086e15811e91&autoAuth=true&ctid=858dc6a1-05e7-48c7-8a2b-4172a00a524a&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLWluZGlhLWNlbnRyYWwtYS1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9"
+        elif request.user.username == "admin":
+            url1 = "" 
         
         return render(request,'dashboard.html', {'username': name, 'url1': url1,"message" : message, "mail" : mail})
     else:
@@ -122,6 +124,7 @@ def alerts(request):
                 return render(request, 'alerts.html', {'username': name,"message" : message, "mail" : mail})
             elif request.user.username == m.to_user:
                 return render(request, 'alerts.html', {'username': name,"message" : message, "mail" : mail})
+        return render(request, 'alerts.html', {'username': name})
             # else:
             #     m.message = "No messages"
             #     print("No messages")
@@ -142,6 +145,7 @@ def requests(request):
                 return render(request, 'requests.html', {'username': name,"mail" : mail,"message" : message})
             elif request.user.username == m.to_user:
                 return render(request, 'requests.html', {'username': name,"mail" : mail,"message" : message})
+        return render(request, 'requests.html', {'username': name})
         
     else:
         return render(request, "login.html")
