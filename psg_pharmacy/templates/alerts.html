@@ -146,13 +146,13 @@
             </div>           
         </div>        
 
-        <a class="btn btn-primary" href="{% url 'ml_predict'%}">ML MODEL</a>     
+        <a class="btn btn-primary" href="{% url 'ml_predict'%}">Get Alerts</a>     
         <div class="row clearfix">
             <div class="col-md-12 col-lg-12 col-xl-12">
                 <ul class="mail_list list-group list-unstyled">
                     <!-- Start of dabba -->
                     {% for m in message %}
-                    {% if m.to_user == request.user.username%}
+                    {% if m.to_user == request.user.first_name %}
                     <li class="list-group-item">
                         
                         <div class="media">
@@ -169,7 +169,7 @@
                             </div>
                             <div class="media-body">
                                 <div class="media-heading">
-                                    <span class="badge bg-blue">{{m.from_user}}</span>
+                                    <span class="badge bg-blue">Counter - {{m.from_user}}</span>
                                     <a href="alerts-info.html" class="m-r-10">
                                         {{m.message}}</a>
                                     
