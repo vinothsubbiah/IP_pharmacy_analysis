@@ -126,3 +126,31 @@
 </body>
 
 </html>
+
+<!-- 
+<table class="table my-0" id="dataTable">
+    <thead>
+        <tr>
+            <th>Counter</th>
+            <th>Drug Code</th>
+            <th>Current Quantity</th>
+            <th>Demand</th>
+            <th>Proposed Order Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in message %}
+        {% if m.to_user == request.user.first_name %}
+        <tr>
+            <td>{{request.user.first_name}}</td>
+            <td>{{m.drug_code}}</td>
+            <td>{{m.current_quantity}}</td>
+            <td>{{m.demand}}</td>
+            <td>{{m.proposed_order_quantity}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        
+    </tbody>
+
+</table> -->
