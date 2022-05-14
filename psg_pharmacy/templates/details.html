@@ -148,85 +148,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for d in df %}
+                                        
                                         <tr>
-                                            <td>AZORAN -25MG TAB</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>30</td>
-                                            <td>AZOR002</td>
-                                            <td>Tablets</td>
+                                            {% for i in d%}
+                                            <td>{{i}}</td>
+                                            {% endfor %}
                                         </tr>
-                                        <tr>
-                                            <td>FEBRINIL INJ 3ML AMP</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>47</td>
-                                            <td>FEBR001<br></td>
-                                            <td>Injection</td>
-                                        </tr>
-                                        <tr>
-                                            <td>PENEGRA 50 MG TAB</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>66</td>
-                                            <td>PENE001<br></td>
-                                            <td>Tablets</td>
-                                        </tr>
-                                        <tr>
-                                            <td>EPTOIN 50 MG TAB</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>41</td>
-                                            <td>EPTO002<br></td>
-                                            <td>Tablets</td>
-                                        </tr>
-                                        <tr>
-                                            <td>REPALOL TAB</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>28</td>
-                                            <td>REPA006<br></td>
-                                            <td>Tablets</td>
-                                        </tr>
-                                        <tr>
-                                            <td>TONACT 80MG TAB</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>61</td>
-                                            <td>TONA010<br></td>
-                                            <td>Tablets</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AUGMENTIN 375 MG DUO TAB<br></td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>38</td>
-                                            <td>AUGM002<br></td>
-                                            <td>Tablets</td>
-                                        </tr>
-                                        <tr>
-                                            <td>POLYBION CZS TAB</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>21</td>
-                                            <td>POLY020<br></td>
-                                            <td>Tablets</td>
-                                        </tr>
-                                        <tr>
-                                            <td>ELTROXIN 50 MCG TAB</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>46</td>
-                                            <td>ELTR002<br></td>
-                                            <td>Tablets</td>
-                                        </tr>
-                                        <tr><td>VENFLON 20G</td>
-                                            <td>General Medicines</td>
-                                            <td>6</td>
-                                            <td>22</td>
-                                            <td>VENF003<br></td>
-                                            <td>Tablets</td>
-                                        </tr>
+                                        {% endfor %}
+                                        
                                     </tbody>
 
                                 </table>

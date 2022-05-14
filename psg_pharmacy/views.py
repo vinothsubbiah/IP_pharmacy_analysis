@@ -1,3 +1,4 @@
+import operator
 import sys
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
@@ -104,10 +105,63 @@ def index(request):
 
 def details(request):
     if request.user.is_authenticated:
+        #getting data from data base
+        lib_dir = r"C:\Users\PSGH\Downloads\instantclient-basic-windows.x64-21.3.0.0.0\instantclient_21_3"
+        try:
+            cx_Oracle.init_oracle_client(lib_dir=r"C:\Users\PSGH\Downloads\instantclient-basic-windows.x64-21.3.0.0.0\instantclient_21_3")
+        except Exception as err:
+            print("Error connecting: cx_Oracle.init_oracle_client()")
+            print(err);
+            sys.exit(1);
+        
+        cno=request.user.first_name
+        dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
+        conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
+        if cno == 6:
+            q="SELECT PHRVAA_DRUG_CODE,PHRVAA_DRUG_NAME,PHRVAA_COUNTER,PHRVAA_CURR_QTY,PHRVAB_CATG_DESC,PHRVAD_DRUG_TYPE FROM phrvah_drug_name_view order by PHRVAA_COUNTER"
+            print(q)
+            with conn.cursor() as cursor:
+                cursor.execute(q)
+                from pandas import DataFrame
+                df = DataFrame(cursor.fetchall())
+                df.columns = [x[0] for x in cursor.description]
+                print("I got %d lines " % len(df))
+            df
+            dcode=df["PHRVAA_DRUG_CODE"].to_list()
+            dname=df["PHRVAA_DRUG_NAME"].to_list()
+            dcntr=df["PHRVAA_COUNTER"].to_list()
+            dqty=df["PHRVAA_CURR_QTY"].to_list()
+            dcatg=df["PHRVAB_CATG_DESC"].to_list()
+            dtype=df["PHRVAD_DRUG_TYPE"].to_list()
+            df = numpy.array(df)
+            print(df)
+            name = request.user.username
+            message = Messages.objects.all()
+            mail = Mail.objects.all()
+            return render(request,'details.html', {'username': name,"message" : message, "mail" : mail, "df": df,"dcode":dcode, "dname":dname, "dcntr":dcntr, "dqty":dqty, "dcatg":dcatg, "dtype":dtype})
+
+        if cno != 6:
+            q="SELECT PHRVAA_DRUG_CODE,PHRVAA_DRUG_NAME,PHRVAA_CURR_QTY,PHRVAB_CATG_DESC,PHRVAD_DRUG_TYPE FROM phrvah_drug_name_view WHERE PHRVAA_COUNTER="+str(cno)
+            print(q)
+            with conn.cursor() as cursor:
+                cursor.execute(q)
+                from pandas import DataFrame
+                df = DataFrame(cursor.fetchall())
+                df.columns = [x[0] for x in cursor.description]
+                print("I got %d lines " % len(df))
+            df
+            dcode=df["PHRVAA_DRUG_CODE"].to_list()
+            dname=df["PHRVAA_DRUG_NAME"].to_list()
+            dqty=df["PHRVAA_CURR_QTY"].to_list()
+            dcatg=df["PHRVAB_CATG_DESC"].to_list()
+            dtype=df["PHRVAD_DRUG_TYPE"].to_list()
+        bill_date = []
+        df = numpy.array(df)
+        print(df[0])
         name = request.user.username
         message = Messages.objects.all()
         mail = Mail.objects.all()
-        return render(request,'details.html', {'username': name,"message" : message, "mail" : mail})
+        return render(request,'details.html', {'username': name,"message" : message, "mail" : mail, "df" : df})
     else:
         return render(request, "login.html")
     
@@ -120,7 +174,6 @@ def alerts(request):
         for m in message:
             if request.user.username == "admin":
                 print("its me ",request.user)
-                print(m.message)
                 return render(request, 'alerts.html', {'username': name,"message" : message, "mail" : mail})
             elif request.user.first_name == m.to_user:
                 print(request.user.first_name)
@@ -196,6 +249,8 @@ def messaiah(request):
 
 def ml_predict(request):
     if request.user.is_authenticated:
+        a = Messages.objects.all()
+        a.delete()
         print("Machine is taking over now!")
         ib_dir = r"C:\Users\PSGH\Downloads\instantclient-basic-windows.x64-21.3.0.0.0\instantclient_21_3"
         try:
@@ -475,6 +530,11 @@ def cals1drug(dcode,cno,request):
         else:
             new_msg.from_user = request.user.first_name
         new_msg.to_user = cno
+        new_msg.time = datetime.date.today()
+        new_msg.drug_code = str(dcode)
+        new_msg.current_quantity = str(cstock)
+        new_msg.demand = str(avgsales)
+        new_msg.proposed_order_quantity = str(math.floor(rol))
         new_msg.save()
         print("ALERT SENT!!!")
 #ml func
