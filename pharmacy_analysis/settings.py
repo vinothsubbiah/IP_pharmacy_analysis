@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'psg_pharmacy',
-    "bootstrap4",
+    "bootstrap5",
 ]
 
 MIDDLEWARE = [
