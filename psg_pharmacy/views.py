@@ -112,7 +112,7 @@ def details(request):
         except Exception as err:
             print("Error connecting: cx_Oracle.init_oracle_client()")
             print(err);
-            sys.exit(1);
+            
         
         cno=request.user.first_name
         dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
@@ -127,6 +127,7 @@ def details(request):
                 df.columns = [x[0] for x in cursor.description]
                 print("I got %d lines " % len(df))
             df
+            data=df
             dcode=df["PHRVAA_DRUG_CODE"].to_list()
             dname=df["PHRVAA_DRUG_NAME"].to_list()
             dcntr=df["PHRVAA_COUNTER"].to_list()
@@ -235,6 +236,17 @@ def alerts_info(request):
     else:
         return render(request, "login.html")
 
+def orders(request):
+    if request.user.is_authenticated and request.user.username == "store_pharmacy":
+        name = request.user.username
+        message = Messages.objects.all()
+        mail = Mail.objects.all()
+        return render(request, 'orders.html', {'username': name,"message" : message, "mail" : mail})
+    elif request.user.is_authenticated:
+          return render(request, "index.html", {'username': name,"message" : message, "mail" : mail})
+    else:
+        return render(request, "login.html")
+
 
 def messaiah(request):
     
@@ -244,6 +256,21 @@ def messaiah(request):
             if request.user.username == m.to_user:
                 print("its me ",request.user)
                 return render(request, "m.html",context={"message" : message})
+    else:
+        return render(request, "login.html")
+# need to add
+def get_orders(request):
+    if request.user.is_authenticated:
+        # orders = orders.objects.all()
+        # messages = Messages.objects.all()
+        # orders.delete()
+        # um = messages.objects.values('drug_code').distinct()
+        # for m1 in um:
+        #     for m2 in messages:
+        #         orders.drug_code = 
+        #         if request.user.username == m.to_user:
+        #             return render(request, "oders.html",context={"orders" : orders})
+        return render(request, "oders.html",context={"orders" : orders})
     else:
         return render(request, "login.html")
 
@@ -409,119 +436,45 @@ def cals1drug(dcode,cno,request):
         avgsales=sum(df_result['pred_value'].to_list())
         sum(df4['SUM(PHRVAD_SAL_QTY)'].to_list())/12
 
-        if cno!=6:
-            q="select PHRVAF_CURR_QTY from \"PAO\".\"PHRVAF_STOCK_ANALYSIS_COUNTER\" where PHRVAF_DRUG_CODE='"+dcode+"' and PHRVAF_COUNT_NO="+str(cno)
-            with conn.cursor() as cursor:
-                cursor.execute(q)
-                from pandas import DataFrame
-                c=cursor.fetchall()
-            try:   
-                c=list(c[0])
-                cstock=c[0]
-                alertflag=0
-                if(c[0]<avgsales):
-                    alertflag=1
-                else:
-                    alertflag=0
-            except:
-                print("exception")
-        else:
-            q="select PHRVAE_CURR_QTY from \"PAO\".\"PHRVAE_STOCK_ANALYSIS_STORE\" where PHRVAE_DRUG_CODE='"+dcode+"' "
-            print(q)
-            with conn.cursor() as cursor:
-                cursor.execute(q)
-                from pandas import DataFrame
-                c=cursor.fetchall()
-                
-            c=list(c[0])
-            cstock=c[0]
-            alertflag=0
-            if(c[0]<avgsales):
-                alertflag=1
-            else:
-                alertflag=0
-        if alertflag==0:
-            print("sufficient quantity available for "+dcode)
-            return
-        if alertflag==1:   
-            print("alert to be sent!!!!!!")
-            dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
-            conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
-            q="select PHRVAD_BILL_DATE , sum(phrvad_sal_qty) from \"PAO\".\"PHRVAD_FOOT_FALLX\" where phrvad_counter_no=4 and phrvad_drug_code='ATRO006' group by PHRVAD_BILL_DATE order by TO_DATE(phrvad_bill_date, 'dd-mm-yyyy')"
-            q="select * from \"PAO\".\"PHRVAI_ORDDATE_VIEW\" where phrvai_drug_code='"+dcode+"'"
+        dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
+        conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
+        # q="select PHRVAD_BILL_DATE , sum(phrvad_sal_qty) from \"PAO\".\"PHRVAD_FOOT_FALLX\" where phrvad_counter_no=4 and phrvad_drug_code='ATRO006' group by PHRVAD_BILL_DATE order by TO_DATE(phrvad_bill_date, 'dd-mm-yyyy')"
+        q="select * from \"PAO\".\"PHRVAI_ORDDATE_VIEW\" where phrvai_drug_code='"+dcode+"'"
 
-            with conn.cursor() as cursor:
-                cursor.execute(q)
-                from pandas import DataFrame
-                dxf = DataFrame(cursor.fetchall())
-                dxf.columns = [x[0] for x in cursor.description]
-                print("I got %d lines " % len(df))
-            print(q)
+        with conn.cursor() as cursor:
+            cursor.execute(q)
+            from pandas import DataFrame
+            dxf = DataFrame(cursor.fetchall())
+            dxf.columns = [x[0] for x in cursor.description]
+            print("I got %d lines " % len(df))
+        print(q)
 
-        if alertflag==1:      
-            x=dxf.PHRVAI_INWD_DATE[0]- dxf.PHRVAI_ORD_DATE[0]
-            x.days
-            x=[]
+        x=dxf.PHRVAI_INWD_DATE[0]- dxf.PHRVAI_ORD_DATE[0]
+        x.days
+        x=[]
         
-            for i in range(len(dxf.index)):
-                x.append((dxf.PHRVAI_INWD_DATE[i]- dxf.PHRVAI_ORD_DATE[i]).days)
-
-        if alertflag==1:       
-            avg=sum(x)/len(x)
-            avg#not sure
-
+        for i in range(len(dxf.index)):
+            x.append((dxf.PHRVAI_INWD_DATE[i]- dxf.PHRVAI_ORD_DATE[i]).days)
         
+        avg=sum(x)/len(x)
+        avg
 
-        if alertflag==1:   
-          leadtime=avg/30
-        
-        if alertflag==1:   
-            if(cno!=6):
-                q="select PHRVAF_MIN_ROL,PHRVAF_CURR_QTY from \"PAO\".\"PHRVAF_STOCK_ANALYSIS_COUNTER\" where PHRVAF_DRUG_CODE='"+dcode+"' and PHRVAF_COUNT_NO="+str(cno)
-                with conn.cursor() as cursor:
-                    cursor.execute(q)
-                    from pandas import DataFrame
-                    c=cursor.fetchall()
-                print(q)    
-                c=list(c[0])
-                c
-            else:
-                q="select PHRVAE_MIN_ROL,PHRVAE_CURR_QTY from \"PAO\".\"PHRVAE_STOCK_ANALYSIS_STORE\" where PHRVAE_DRUG_CODE='"+dcode+"' and PHRVAE_COUNT_NO="+str(cno)
-                with conn.cursor() as cursor:
-                    cursor.execute(q)
-                    from pandas import DataFrame
-                    c=cursor.fetchall()
-                print(q)    
-                c=list(c[0])
-                c #not sure
-            minrol=c[0]
-            print(c)
-
-        if alertflag==1:   
-            dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
-            conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
-            # q="select PHRVAD_BILL_DATE , sum(phrvad_sal_qty) from \"PAO\".\"PHRVAD_FOOT_FALLX\" where phrvad_counter_no=4 and phrvad_drug_code='ATRO006' group by PHRVAD_BILL_DATE order by TO_DATE(phrvad_bill_date, 'dd-mm-yyyy')"
-            q="select * from \"PAO\".\"PHRVAI_ORDDATE_VIEW\" where phrvai_drug_code='"+dcode+"'"
-
-            with conn.cursor() as cursor:
-                cursor.execute(q)
-                from pandas import DataFrame
-                dxf = DataFrame(cursor.fetchall())
-                dxf.columns = [x[0] for x in cursor.description]
-                print("I got %d lines " % len(df))
-            dxf #not sure
-
-        if alertflag==1:       
-            safetystock=c[0]
+        leadtime=avg/30
 
         rol=avgsales*leadtime
 
-        if alertflag==1:   
-            rol=avgsales*leadtime+safetystock
-            if cno==6:
-                msg = "Please place an order for drug code : "+str(dcode)+" , suggested quantity of order : "+str(math.floor(rol))+" since the demand per month is "+str(avgsales)+" units" +", which is less than the current stock "+str(cstock)
-            else:
-                msg = "Please request central store to place an order for drug code : "+str(dcode)+" , suggested quantity of order : "+str(math.floor(rol))+" since the demand per month is "+str(avgsales)+" units , which is less than the current stock "+str(cstock)
+        q="select PHRVAF_CURR_QTY from \"PAO\".\"PHRVAF_STOCK_ANALYSIS_COUNTER\" where PHRVAF_DRUG_CODE='"+dcode+"' and PHRVAF_COUNT_NO="+str(cno)
+        with conn.cursor() as cursor:
+            cursor.execute(q)
+            from pandas import DataFrame
+            c=cursor.fetchall()
+                
+        c=list(c[0])
+        cstock=c[0]
+
+        if cstock<rol:
+            print("Please request central store to place an order for drug code : "+str(dcode)+" , demand per month : "+str(avgsales)+" since the current stock is "+str(cstock)+" units , which is less than the re-order level"+str(math.floor(rol)))
+            msg="Please request central store to place an order for drug code : "+str(dcode)+" , demand per month : "+str(avgsales)+" since the current stock is "+str(cstock)+" units , which is less than the re-order level"+str(math.floor(rol))
 
         new_msg = Messages()
         new_msg.message = msg
@@ -537,6 +490,121 @@ def cals1drug(dcode,cno,request):
         new_msg.proposed_order_quantity = str(math.floor(rol))
         new_msg.save()
         print("ALERT SENT!!!")
+        # if cno!=6:
+        #     q="select PHRVAF_CURR_QTY from \"PAO\".\"PHRVAF_STOCK_ANALYSIS_COUNTER\" where PHRVAF_DRUG_CODE='"+dcode+"' and PHRVAF_COUNT_NO="+str(cno)
+        #     with conn.cursor() as cursor:
+        #         cursor.execute(q)
+        #         from pandas import DataFrame
+        #         c=cursor.fetchall()
+        #     try:   
+        #         c=list(c[0])
+        #         cstock=c[0]
+        #         alertflag=0
+        #         if(c[0]<avgsales):
+        #             alertflag=1
+        #         else:
+        #             alertflag=0
+        #     except:
+        #         print("exception")
+        # else:
+        #     q="select PHRVAE_CURR_QTY from \"PAO\".\"PHRVAE_STOCK_ANALYSIS_STORE\" where PHRVAE_DRUG_CODE='"+dcode+"' "
+        #     print(q)
+        #     with conn.cursor() as cursor:
+        #         cursor.execute(q)
+        #         from pandas import DataFrame
+        #         c=cursor.fetchall()
+                
+        #     c=list(c[0])
+        #     cstock=c[0]
+        #     alertflag=0
+        #     if(c[0]<avgsales):
+        #         alertflag=1
+        #     else:
+        #         alertflag=0
+        # if alertflag==0:
+        #     print("sufficient quantity available for "+dcode)
+        #     return
+        # if alertflag==1:   
+        #     print("alert to be sent!!!!!!")
+        #     dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
+        #     conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
+        #     q="select PHRVAD_BILL_DATE , sum(phrvad_sal_qty) from \"PAO\".\"PHRVAD_FOOT_FALLX\" where phrvad_counter_no=4 and phrvad_drug_code='ATRO006' group by PHRVAD_BILL_DATE order by TO_DATE(phrvad_bill_date, 'dd-mm-yyyy')"
+        #     q="select * from \"PAO\".\"PHRVAI_ORDDATE_VIEW\" where phrvai_drug_code='"+dcode+"'"
+
+        #     with conn.cursor() as cursor:
+        #         cursor.execute(q)
+        #         from pandas import DataFrame
+        #         dxf = DataFrame(cursor.fetchall())
+        #         dxf.columns = [x[0] for x in cursor.description]
+        #         print("I got %d lines " % len(df))
+        #     print(q)
+
+        # if alertflag==1:      
+        #     x=dxf.PHRVAI_INWD_DATE[0]- dxf.PHRVAI_ORD_DATE[0]
+        #     x.days
+        #     x=[]
+        
+        #     for i in range(len(dxf.index)):
+        #         x.append((dxf.PHRVAI_INWD_DATE[i]- dxf.PHRVAI_ORD_DATE[i]).days)
+
+        # if alertflag==1:       
+        #     avg=sum(x)/len(x)
+        #     avg#not sure
+
+        
+
+        # if alertflag==1:   
+        #   leadtime=avg/30
+        
+        # if alertflag==1:   
+        #     if(cno!=6):
+        #         q="select PHRVAF_MIN_ROL,PHRVAF_CURR_QTY from \"PAO\".\"PHRVAF_STOCK_ANALYSIS_COUNTER\" where PHRVAF_DRUG_CODE='"+dcode+"' and PHRVAF_COUNT_NO="+str(cno)
+        #         with conn.cursor() as cursor:
+        #             cursor.execute(q)
+        #             from pandas import DataFrame
+        #             c=cursor.fetchall()
+        #         print(q)    
+        #         c=list(c[0])
+        #         c
+        #     else:
+        #         q="select PHRVAE_MIN_ROL,PHRVAE_CURR_QTY from \"PAO\".\"PHRVAE_STOCK_ANALYSIS_STORE\" where PHRVAE_DRUG_CODE='"+dcode+"' and PHRVAE_COUNT_NO="+str(cno)
+        #         with conn.cursor() as cursor:
+        #             cursor.execute(q)
+        #             from pandas import DataFrame
+        #             c=cursor.fetchall()
+        #         print(q)    
+        #         c=list(c[0])
+        #         c #not sure
+        #     minrol=c[0]
+        #     print(c)
+
+        # if alertflag==1:   
+        #     dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
+        #     conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
+        #     # q="select PHRVAD_BILL_DATE , sum(phrvad_sal_qty) from \"PAO\".\"PHRVAD_FOOT_FALLX\" where phrvad_counter_no=4 and phrvad_drug_code='ATRO006' group by PHRVAD_BILL_DATE order by TO_DATE(phrvad_bill_date, 'dd-mm-yyyy')"
+        #     q="select * from \"PAO\".\"PHRVAI_ORDDATE_VIEW\" where phrvai_drug_code='"+dcode+"'"
+
+        #     with conn.cursor() as cursor:
+        #         cursor.execute(q)
+        #         from pandas import DataFrame
+        #         dxf = DataFrame(cursor.fetchall())
+        #         dxf.columns = [x[0] for x in cursor.description]
+        #         print("I got %d lines " % len(df))
+        #     dxf #not sure
+
+        # if alertflag==1:       
+        #     safetystock=c[0]
+
+        # rol=avgsales*leadtime
+
+        # if alertflag==1:   
+        #     rol=avgsales*leadtime+safetystock
+        #     if cno==6:
+        #         msg = "Please place an order for drug code : "+str(dcode)+" , suggested quantity of order : "+str(math.floor(rol))+" since the demand per month is "+str(avgsales)+" units" +", which is less than the current stock "+str(cstock)
+        #     else:
+        #         msg = "Please request central store to place an order for drug code : "+str(dcode)+" , suggested quantity of order : "+str(math.floor(rol))+" since the demand per month is "+str(avgsales)+" units , which is less than the current stock "+str(cstock)
+
+       
 #ml func
 def create_dataset(dataset, look_back=1):
 	dataX, dataY = [], []
