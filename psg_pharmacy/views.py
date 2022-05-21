@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 from django.http import HttpResponse
 from django.urls import reverse
-from .models import Messages,Mail
+from .models import Messages,Mail,Orders
 #For machine Learning Model
 import numpy 
 import matplotlib.pyplot as plt
@@ -261,16 +261,49 @@ def messaiah(request):
 # need to add
 def get_orders(request):
     if request.user.is_authenticated:
-        # orders = orders.objects.all()
+        ud_code = []
+        alerts = Messages.objects.all()
+        
+        try:
+            o = Orders.objects.all()
+            o.delete()
+        except:
+            print()
+        for a in alerts:
+            ud_code.append(a.drug_code)
+        ud_code = numpy.array(ud_code)
+        ud_code = list(numpy.unique(ud_code))
+        print(ud_code)
+        for i in ud_code:
+            demand = 0
+            rol = 0
+
+            for a in alerts:
+                if a.drug_code == i:
+                    name = a.drug_name
+                    demand += a.demand
+                    rol += a.rol
+            
+            ord = Orders()
+            ord.drug_code = i
+            ord.drug_name = a.drug_name
+            ord.current_quantity = a.current_quantity # need to get current_qty from database
+            ord.demand = demand
+            ord.rol= rol
+            
+            ord.save()
+
+            orders = Orders.objects.all()
+        # df.groupby(["drug_code"]).sum()   
         # messages = Messages.objects.all()
         # orders.delete()
-        # um = messages.objects.values('drug_code').distinct()
-        # for m1 in um:
+        # d_codes = messages.objects.values('drug_code').distinct()
+        # for m1 in d_codes:
         #     for m2 in messages:
-        #         orders.drug_code = 
+        #         dugInOrd = Orders.objects.get(name=m1)
         #         if request.user.username == m.to_user:
         #             return render(request, "oders.html",context={"orders" : orders})
-        return render(request, "oders.html",context={"orders" : orders})
+        return render(request, "orders.html",context={"orders" : orders})
     else:
         return render(request, "login.html")
 

@@ -22,6 +22,8 @@ class Mail(models.Model):
     from_user = models.CharField(max_length=30)
     to_user = models.CharField(max_length=30)
     time = models.DateTimeField(auto_now_add=True)
+
+
 class Orders(models.Model):
     drug_code = models.CharField(max_length=100)
     drug_name = models.CharField(max_length=200)

@@ -202,19 +202,17 @@
 					<td class="text-center">Kirthic</td>
 
                 </tr>-->
-			     {% for i in df%}
+			     {% for i in orders%}
 					  <tr>
                         <td class="text-center">{{ forloop.counter }}</td>
-                        {% for j in i%}
-                        <td class="text-center">{{j}}</td>
-                        {% endfor %}
-						  <!-- <td class="text-center">{{i}}</td>
-						  <td class="text-center">{{i}}</td>
-						  <td class="text-center">{{i}}</td>
-						  <td class="text-center">{{i}}</td>
-						  <td class="text-center">{{i}}</td> -->
+                       
+						  <td class="text-center">{{i.drug_code}}</td>
+						  <td class="text-center">{{i.drug_name}}</td>
+						  <td class="text-center">{{i.current_quantity}}</td>
+						  <td class="text-center">{{i.demand}}</td>
+						  <td class="text-center">{{i.rol}}</td>
 						</tr>
-						{% endfor %}
+				{% endfor %}
 
               </tbody>
        

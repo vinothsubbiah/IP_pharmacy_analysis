@@ -11,6 +11,7 @@ urlpatterns = [
     path('ml_predict',views.ml_predict,name='ml_predict'),
     path("",views.messaiah,name="messaiah"),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('get_orders/', views.get_orders, name='get_orders'),
     path('details/', views.details, name='details'),
     path('requests/', views.requests, name='requests'),
     path('alerts/', views.alerts, name='alerts'),
