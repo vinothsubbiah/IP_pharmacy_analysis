@@ -20,6 +20,11 @@
     <link rel="stylesheet" href="{% static 'css/alert.css' %}">
     <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider-1.css' %}">
     <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider.css' %}">
+    <style>
+        #bad{
+            color: red;
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -39,6 +44,11 @@
                                     {% csrf_token %}
                                         <div class="mb-3"><input class="form-control form-control-user" type="text" id="username" aria-describedby="emailHelp" placeholder="Username" name="username"></div>
                                         <div class="mb-3"><input class="form-control form-control-user" type="password" id="pass1" placeholder="Password" name="password"></div>
+                                        {% if messages %}
+                                        {% for message in messages %}
+                                        <span id="bad">{{ message }}</span>
+                                        {% endfor %}
+                                        {% endif %}
                                         <hr>
                                         <div class="mb-3">
                                             <div class="custom-control custom-checkbox small"></div>

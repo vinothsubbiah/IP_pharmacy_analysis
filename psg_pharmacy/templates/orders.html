@@ -41,6 +41,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
     <!--===============================================================================================-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css">
+    <style>
+        #dont{
+            visibility: hidden
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -58,7 +63,7 @@
                     <li class="nav-item"><a class="nav-link active" href="{% url 'orders' %}"><i class="fa fa-bell"></i><span>Orders</span></a></li>
                     {% endif %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'details' %}"><i class="fas fa-table"></i><span>View Details</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'signin' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'signout' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
                     <li class="nav-item"></li>
                     <li class="nav-item"></li>
                     <li class="nav-item"></li>
@@ -83,7 +88,7 @@
                                     </form>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="nav-item dropdown no-arrow mx-1" id="dont">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         
@@ -110,7 +115,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="nav-item dropdown no-arrow mx-1" id="dont">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">mails center</h6>

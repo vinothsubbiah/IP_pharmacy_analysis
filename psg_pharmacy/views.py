@@ -22,7 +22,7 @@ import cx_Oracle
 import os
 import datetime
 
-
+user = ""
 
 
 def signup(request):
@@ -227,14 +227,14 @@ def sendMail(request):
 
     return redirect('requests')
 
-def alerts_info(request):
-    if request.user.is_authenticated:
-        name = request.user.username
-        message = Messages.objects.all()
-        mail = Mail.objects.all()
-        return render(request, 'alerts-info.html', {'username': name,"message" : message, "mail" : mail})
-    else:
-        return render(request, "login.html")
+# def alerts_info(request):
+#     if request.user.is_authenticated:
+#         name = request.user.username
+#         message = Messages.objects.all()
+#         mail = Mail.objects.all()
+#         return render(request, 'alerts-info.html', {'username': name,"message" : message, "mail" : mail})
+#     else:
+#         return render(request, "login.html")
 
 def orders(request):
     if request.user.is_authenticated and request.user.username == "store_pharmacy":

@@ -20,6 +20,11 @@
     <link rel="stylesheet" href="{% static 'css/alert.css'%}">
     <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider-1.css'%}">
     <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider.css'%}">
+    <style>
+        #dont{
+            visibility: hidden
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -37,7 +42,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'orders' %}"><i class="fa fa-bell"></i><span>Orders</span></a></li>
                     {% endif %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'details' %}"><i class="fas fa-table"></i><span>View Details</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'signin' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'signout' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>
                     <li class="nav-item"></li>
                     <li class="nav-item"></li>
                     <li class="nav-item"></li>
@@ -53,7 +58,7 @@
                             <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
                         </form> -->
                         <ul class="navbar-nav flex-nowrap ms-auto">
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="nav-item dropdown no-arrow mx-1" id="dont">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-bell fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         
@@ -80,7 +85,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
+                            <li class="nav-item dropdown no-arrow mx-1" id="dont">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-envelope fa-fw"></i></a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
                                         <h6 class="dropdown-header">mails center</h6>
