@@ -174,68 +174,71 @@
                 </div>
             </div>           
         </div>        
-        {% if  request.user.username != "store_pharmacy" %}
+        
+  {% if  request.user.username != "store_pharmacy" %}
             <a class="btn btn-primary" href="{% url 'ml_predict'%}">Get Alerts</a>
-        {% endif %}
+    {% endif %}
+        <div class="limiter">
+            <div class="container-login100">
+                <div class="wrap-login1001 p-l-55 p-r-55 p-t-65 p-b-54">
+                    <form class="login100-form validate-form">
+                        
+                <table id="view_atten" class="table table-hover table-responsive table-bordered table-striped table cust-datatable dataTable no-footer"  style="width:100%">
+
+                <thead>
+                    <tr>
+                        <th data-sortable="true" class="text-center">S.No</th>
+                        {% if  request.user.username == "store_pharmacy" %}
+                        <th data-sortable="true" class="text-center">Counter no</th>
+                            {% endif %}
+                    <th data-sortable="true" class="text-center">Drug Code</th>
+                    <th data-sortable="true" class="text-center">Drug Name</th>
+                    <th data-sortable="true" class="text-center">Current Stock</th>
+                    <th data-sortable="true" class="text-center">Demand</th>
+                    <th data-sortable="true" class="text-center">Rol</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    {% for i in message%}
+                        <tr>
+                            
+                            <td class="text-center">{{ forloop.counter }}</td>
+                            {% if  request.user.username == "store_pharmacy" %}
+                            <td class="text-center">{{i.from_user}}</td>
+                            {% endif %}
+                            
+                            <td class="text-center">{{i.drug_code}}</td>
+                            <td class="text-center">{{i.drug_name}}</td>
+                            <td class="text-center">{{i.current_quantity}}</td>
+                            <td class="text-center">{{i.demand}}</td>
+                            <td class="text-center">{{i.rol}}</td>
+                            
+
+                            <!-- {% if  request.user.username != "store_pharmacy" %}
+                            <td class="text-center">#1</td>
+                            {% if  request.user.username == "store_pharmacy" %}
+                            <td class="text-center">{{i.from_user}}</td>
+                            {% endif %}
+                            {{i.drug_code}} // {{i.from_user}} // {{ request.user.first_name}} ||
+                            <td class="text-center">{{i.drug_code}}</td>
+                            <td class="text-center">{{i.drug_name}}</td>
+                            <td class="text-center">{{i.current_quantity}}</td>
+                            <td class="text-center">{{i.demand}}</td>
+                            <td class="text-center">{{i.rol}}</td>
+                            {% endif %} -->
+
+                            
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
         
-        
-
-
-        <!--Data Table Start-->
-	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login1001 p-l-55 p-r-55 p-t-65 p-b-54">
-				<form class="login100-form validate-form">
-					
-            <table id="view_atten" class="table table-hover table-responsive table-bordered table-striped table cust-datatable dataTable no-footer"  style="width:100%">
-
-              <thead>
-                <tr>
-                    <th data-sortable="true" class="text-center">S.No</th>
-                    {% if  request.user.username == "store_pharmacy" %}
-                    <th data-sortable="true" class="text-center">Counter no</th>
-                        {% endif %}
-                  <th data-sortable="true" class="text-center">Drug Code</th>
-                  <th data-sortable="true" class="text-center">Drug Name</th>
-				  <th data-sortable="true" class="text-center">Current Stock</th>
-				  <th data-sortable="true" class="text-center">Demand</th>
-                  <th data-sortable="true" class="text-center">Rol</th>
-                </tr>
-              </thead>
-              <tbody>
-               <!-- <tr>
-                  <td class="text-center">1</td>
-                  <td class="text-center">Kirthic</td>
-                  <td class="text-center">Absent</td>
-					<td class="text-center">Kirthic</td>
-                  <td class="text-center">Absent</td>
-					<td class="text-center">Kirthic</td>
-
-                </tr>-->
-			     {% for i in df%}
-					  <tr>
-                        <td class="text-center">{{ forloop.counter }}</td>
-                        {% for j in i%}
-                        <td class="text-center">{{j}}</td>
-                        {% endfor %}
-						  <!-- <td class="text-center">{{i}}</td>
-						  <td class="text-center">{{i}}</td>
-						  <td class="text-center">{{i}}</td>
-						  <td class="text-center">{{i}}</td>
-						  <td class="text-center">{{i}}</td> -->
-						</tr>
-						{% endfor %}
-
-              </tbody>
-       
-            </table>
-        </form>
-      </div>
-    </div>
-  </div>
-
-
-  
+                </table>
+            </form>
+        </div>
+        </div>
+        </div>
       
         <div class="row clearfix">
             

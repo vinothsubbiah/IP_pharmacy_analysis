@@ -127,7 +127,7 @@
 <div class="container">
 <div class="wraper bootstrap snippets bootdeys bootdey">
     <div class="page-title"> 
-        <h3 class="title">Reports</h3> 
+        <h3 class="title">Requests</h3> 
     </div>
       
     <div class="row">
@@ -223,7 +223,24 @@
                             <tr>
                                 <td class="mail-select">
                                     <label class="cr-styled">
-                                        <input type="checkbox"><i class="fa"></i>
+                                        Received
+                                    </label>
+                                </td>
+                                <td>
+                                    <a href="##email-read.html">{{m.from_user}}</a>
+                                </td>
+                                <td>
+                                    <a href="##email-read.html"><i class="fa fa-circle text-info m-r-15"></i>  {{m.body}}</a>
+                                </td>
+                                <td class="text-right">
+                                    {{m.time}}
+                                </td>
+                                {% endif %}
+                                {% if m.from_user == request.user.username %}
+                            <tr>
+                                <td class="mail-select">
+                                    <label class="cr-styled">
+                                        Sent
                                     </label>
                                 </td>
                                 <td>

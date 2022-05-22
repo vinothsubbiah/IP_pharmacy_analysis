@@ -1,3 +1,4 @@
+from email.message import Message
 import operator
 import sys
 from django.shortcuts import redirect, render
@@ -9,7 +10,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from .models import Messages,Mail,Orders
 #For machine Learning Model
-# import numpy 
+import numpy 
 # import matplotlib.pyplot as plt
 # import pandas as pd
 # import math
@@ -20,7 +21,7 @@ from .models import Messages,Mail,Orders
 # from sklearn.metrics import mean_squared_error
 # import cx_Oracle
 # import os
-# import datetime
+import datetime
 
 user = ""
 
@@ -173,13 +174,15 @@ def alerts(request):
         message = Messages.objects.all()
         mail = Mail.objects.all()
         for m in message:
-            if request.user.username == "admin":
+            if request.user.username == "store_pharmacy":
                 print("its me ",request.user)
                 return render(request, 'alerts.html', {'username': name,"message" : message, "mail" : mail})
-            elif request.user.first_name == m.to_user:
+            else:
+                print(type(m.from_user), type(request.user.first_name))
+                msg1 = Messages.objects.filter(from_user = request.user.first_name)
                 print(request.user.first_name)
-                return render(request, 'alerts.html', {'username': name,"message" : message, "mail" : mail})
-        return render(request, 'alerts.html', {'username': name})
+                return render(request, 'alerts.html', {'username': name,"message" : msg1, "mail" : mail})
+        #return render(request, 'alerts.html', {'username': name,"message" : message, "mail" : mail})
             # else:
             #     m.message = "No messages"
             #     print("No messages")
@@ -241,7 +244,8 @@ def orders(request):
         name = request.user.username
         message = Messages.objects.all()
         mail = Mail.objects.all()
-        return render(request, 'orders.html', {'username': name,"message" : message, "mail" : mail})
+        orders = Orders.objects.all()
+        return render(request, 'orders.html', {'username': name,"message" : message, "mail" : mail, "orders" : orders})
     elif request.user.is_authenticated:
           return render(request, "index.html", {'username': name,"message" : message, "mail" : mail})
     else:
@@ -286,7 +290,7 @@ def get_orders(request):
             
             ord = Orders()
             ord.drug_code = i
-            ord.drug_name = a.drug_name
+            ord.drug_name = name
             ord.current_quantity = a.current_quantity # need to get current_qty from database
             ord.demand = demand
             ord.rol= rol
