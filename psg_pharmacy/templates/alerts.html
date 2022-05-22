@@ -174,8 +174,10 @@
                 </div>
             </div>           
         </div>        
-
-        <a class="btn btn-primary" href="{% url 'ml_predict'%}">Get Alerts</a>
+        {% if  request.user.username != "store_pharmacy" %}
+            <a class="btn btn-primary" href="{% url 'ml_predict'%}">Get Alerts</a>
+        {% endif %}
+        
         
 
 
