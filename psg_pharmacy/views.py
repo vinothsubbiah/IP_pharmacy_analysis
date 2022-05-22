@@ -11,16 +11,16 @@ from django.urls import reverse
 from .models import Messages,Mail,Orders
 #For machine Learning Model
 import numpy 
-# import matplotlib.pyplot as plt
-# import pandas as pd
-# import math
-# from keras.models import Sequential
-# from keras.layers import Dense
-# from keras.layers import LSTM
-# from sklearn.preprocessing import MinMaxScaler
-# from sklearn.metrics import mean_squared_error
-# import cx_Oracle
-# import os
+import matplotlib.pyplot as plt
+import pandas as pd
+import math
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import LSTM
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_squared_error
+import cx_Oracle
+import os
 import datetime
 
 user = ""
