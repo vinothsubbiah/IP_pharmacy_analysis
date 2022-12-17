@@ -14,12 +14,14 @@
     <link rel="icon" type="image/png" sizes="512x512" href="{% static 'img/android-chrome-512x512.png' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/Nunito.css' %}">
+    <link rel="stylesheet" href="{% static 'css/wave.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'fonts/fontawesome5-overrides.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/alert.css' %}">
     <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider-1.css' %}">
     <link rel="stylesheet" href="{% static 'css/Carousel_Image_Slider.css' %}">
+
     <style>
         #bad{
             color: red;
@@ -27,41 +29,65 @@
     </style>
 </head>
 
-<body class="bg-gradient-primary">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-9 col-lg-12 col-xl-10" style="margin: 60px;">
-                <div class="card shadow-lg o-hidden border-0 my-5">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-flex"><img src="{% static 'img/acPdKniQ_400x400.jpg' %}"></div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h4 class="text-dark mb-4">Pharmacy Analysis System</h4>
+<body>
+    <div class="header">
+        <div class="inner-header flex">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-9 col-lg-12 col-xl-10" style="margin: 60px;">
+                        <div class="card shadow-lg o-hidden border-0 my-5">
+                            <div class="card-body p-0">
+                                <div class="row">
+                                    <div class="col-lg-6 d-none d-lg-flex"><img src="{% static 'img/acPdKniQ_400x400.jpg' %}"></div>
+                                    <div class="col-lg-6">
+                                        <div class="p-5">
+                                            <div class="text-center">
+                                                <h4 class="text-dark mb-4">Pharmacy Analysis System</h4>
+                                            </div>
+                                            <form class="user" action="/psg/signin/" method ="post">
+                                            {% csrf_token %}
+                                                <div class="mb-3"><input class="form-control form-control-user" type="text" id="username" aria-describedby="emailHelp" placeholder="Username" name="username"></div>
+                                                <div class="mb-3"><input class="form-control form-control-user" type="password" id="pass1" placeholder="Password" name="password"></div>
+                                                {% if messages %}
+                                                {% for message in messages %}
+                                                <span id="bad">{{ message }}</span>
+                                                {% endfor %}
+                                                {% endif %}
+                                                <hr>
+                                                <div class="mb-3">
+                                                    <div class="custom-control custom-checkbox small"></div>
+                                                </div><button class="btn btn-primary d-block btn-user w-100" type="submit" style="font-size: 19.8px;">Login</button>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <form class="user" action="/psg/signin/" method ="post">
-                                    {% csrf_token %}
-                                        <div class="mb-3"><input class="form-control form-control-user" type="text" id="username" aria-describedby="emailHelp" placeholder="Username" name="username"></div>
-                                        <div class="mb-3"><input class="form-control form-control-user" type="password" id="pass1" placeholder="Password" name="password"></div>
-                                        {% if messages %}
-                                        {% for message in messages %}
-                                        <span id="bad">{{ message }}</span>
-                                        {% endfor %}
-                                        {% endif %}
-                                        <hr>
-                                        <div class="mb-3">
-                                            <div class="custom-control custom-checkbox small"></div>
-                                        </div><button class="btn btn-primary d-block btn-user w-100" type="submit" style="font-size: 19.8px;">Login</button>
-                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+        <div>
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+            <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            </defs>
+            <g class="parallax">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+            </g>
+            </svg>
+            </div>
     </div>
+  <!--Content starts-->
+<div class="content flex">
+    <p>© PSG IMSR Pharmacy</p>
+  </div>
+  <!--Content ends-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/bs-init.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>

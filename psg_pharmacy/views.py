@@ -104,6 +104,55 @@ def index(request):
     else:
         return render(request, "login.html")
 
+def Drug_Logistics(request):
+    print("hi")
+    if request.user.is_authenticated:
+        name = request.user.username
+        message = Messages.objects.all()
+        mail = Mail.objects.all()
+        dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
+        conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
+        q="select * from \"PAO\".\"PHRVAI_ORDDATE_VIEW\" "
+
+        with conn.cursor() as cursor:
+            cursor.execute(q)
+            from pandas import DataFrame
+            dxf = DataFrame(cursor.fetchall())
+            dxf.columns = [x[0] for x in cursor.description]
+            print("I got %d lines " % len(dxf))
+        print(q)
+        l=dxf.PHRVAI_DRUG_CODE.unique()
+        l.tolist()
+        l
+       
+        ndxf=pd.DataFrame(list(zip(l,[0]*len(l))))
+        ndxf=ndxf.values.tolist()
+        cnt=-1
+       
+        for i in l:
+            print(i)
+            cnt+=1
+            tdxf=dxf.loc[dxf['PHRVAI_DRUG_CODE'] == i]
+            print(tdxf)
+
+            x=[]
+            tdxf.reset_index(drop=True, inplace=True)
+            for j in range(len(tdxf)):
+                x.append((tdxf.PHRVAI_INWD_DATE[j]- tdxf.PHRVAI_ORD_DATE[j]).days)
+            avg=sum(x)/len(x)
+            print(avg)
+            
+            for k in ndxf:
+                if k[0]==i:
+                    k[1]=avg
+        ndxf=pd.DataFrame(ndxf)
+        print(ndxf)
+        ndxf=numpy.array(ndxf)
+        
+        return render(request, "logistics.html", {'username': name,"message" : message, "mail" : mail, "df": ndxf})
+    else:
+        return render(request, "login.html")
+
 def details(request):
     if request.user.is_authenticated:
         #getting data from data base
@@ -116,10 +165,13 @@ def details(request):
             
         
         cno=request.user.first_name
+        print("cno is",cno)
         dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
         conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
-        if cno == 6:
-            q="SELECT PHRVAA_DRUG_CODE,PHRVAA_DRUG_NAME,PHRVAA_COUNTER,PHRVAA_CURR_QTY,PHRVAB_CATG_DESC,PHRVAD_DRUG_TYPE FROM phrvah_drug_name_view order by PHRVAA_COUNTER"
+        if cno == "6":
+            print("inside central thingy")
+            #q="SELECT PHRVAA_DRUG_CODE,PHRVAA_DRUG_NAME,PHRVAA_COUNTER,PHRVAA_CURR_QTY,PHRVAB_CATG_DESC,PHRVAD_DRUG_TYPE FROM phrvah_drug_name_view order by PHRVAA_COUNTER"
+            q="SELECT UNIQUE(Q.PHRVAA_DRUG_CODE) , Q.PHRVAA_DRUG_NAME,Q.PHRVAA_ST_QTY as PHRVAA_CURR_QTY,P.PHRVAB_CATG_DESC,P.PHRVAD_DRUG_TYPE FROM \"PAO\".\"PHRVAH_DRUG_NAME_VIEW\" P , \"PAO\".\"PHRVAA_DRUG_MASTER_VIEW\" Q WHERE P.PHRVAA_DRUG_CODE = Q.PHRVAA_DRUG_CODE AND Q.PHRVAA_COUNTER=6"
             print(q)
             with conn.cursor() as cursor:
                 cursor.execute(q)
@@ -131,19 +183,22 @@ def details(request):
             data=df
             dcode=df["PHRVAA_DRUG_CODE"].to_list()
             dname=df["PHRVAA_DRUG_NAME"].to_list()
-            dcntr=df["PHRVAA_COUNTER"].to_list()
+            # dcntr=df["PHRVAA_COUNTER"].to_list()
             dqty=df["PHRVAA_CURR_QTY"].to_list()
             dcatg=df["PHRVAB_CATG_DESC"].to_list()
             dtype=df["PHRVAD_DRUG_TYPE"].to_list()
+            print(dqty)
             df = numpy.array(df)
             print(df)
             name = request.user.username
             message = Messages.objects.all()
             mail = Mail.objects.all()
-            return render(request,'details.html', {'username': name,"message" : message, "mail" : mail, "df": df,"dcode":dcode, "dname":dname, "dcntr":dcntr, "dqty":dqty, "dcatg":dcatg, "dtype":dtype})
+            return render(request,'details.html', {'username': name,"message" : message, "mail" : mail, "df": df,"dcode":dcode, "dname":dname,  "dqty":dqty, "dcatg":dcatg, "dtype":dtype})
 
         if cno != 6:
-            q="SELECT PHRVAA_DRUG_CODE,PHRVAA_DRUG_NAME,PHRVAA_CURR_QTY,PHRVAB_CATG_DESC,PHRVAD_DRUG_TYPE FROM phrvah_drug_name_view WHERE PHRVAA_COUNTER="+str(cno)
+            print("insde store thingy")
+            #q="SELECT PHRVAA_DRUG_CODE,PHRVAA_DRUG_NAME,PHRVAA_CURR_QTY,PHRVAB_CATG_DESC,PHRVAD_DRUG_TYPE FROM phrvah_drug_name_view WHERE PHRVAA_COUNTER="+str(cno)
+            q="SELECT unique(Q.PHRVAA_DRUG_CODE) , Q.PHRVAA_DRUG_NAME,Q.PHRVAA_CURR_QTY,P.PHRVAB_CATG_DESC,P.PHRVAD_DRUG_TYPE FROM \"PAO\".\"PHRVAH_DRUG_NAME_VIEW\" P ,  \"PAO\".\"PHRVAA_DRUG_MASTER_VIEW\" Q WHERE P.PHRVAA_DRUG_CODE = Q.PHRVAA_DRUG_CODE AND Q.PHRVAA_COUNTER="+str(cno)
             print(q)
             with conn.cursor() as cursor:
                 cursor.execute(q)
@@ -190,21 +245,28 @@ def alerts(request):
 
     else:
         return render(request, "login.html")
-    
+    return render(request, 'alerts.html', {'username': name})
 
 def requests(request):
     if request.user.is_authenticated:
         name = request.user.username
         message = Messages.objects.all()
         mail = Mail.objects.all()
-        for m in mail:
-            if request.user.username == "admin" or request.user.username == "store_pharmacy":
-                print("its me ",request.user)
-                return render(request, 'requests.html', {'username': name,"mail" : mail,"message" : message})
-            elif request.user.username == m.to_user:
-                return render(request, 'requests.html', {'username': name,"mail" : mail,"message" : message})
-        return render(request, 'requests.html', {'username': name})
-        
+        m2=[]
+        for i in mail:
+            m2.insert(0,i)
+        print("m2",m2)
+        print(mail)
+        print(reversed(mail))
+        # for m in mail:
+        #     if request.user.username == "admin" or request.user.username == "store_pharmacy":
+        #         print("its me ",request.user)
+        #         return render(request, 'requests.html', {'username': name,"mail" : mail,"message" : message})
+        #     elif request.user.username == m.to_user:
+        #         return render(request, 'requests.html', {'username': name,"mail" : mail,"message" : message})
+        print("\n\n\nuser loged in\n\n\n")
+        return render(request, 'requests.html', {'username': name,"mail" : m2,"message" : message})
+
     else:
         return render(request, "login.html")
     
@@ -291,7 +353,19 @@ def get_orders(request):
             ord = Orders()
             ord.drug_code = i
             ord.drug_name = name
-            ord.current_quantity = a.current_quantity # need to get current_qty from database
+            q="SELECT UNIQUE(Q.PHRVAA_ST_QTY)  FROM \"PAO\".\"PHRVAH_DRUG_NAME_VIEW\" P , \"PAO\".\"PHRVAA_DRUG_MASTER_VIEW\" Q WHERE P.PHRVAA_DRUG_CODE = Q.PHRVAA_DRUG_CODE AND Q.PHRVAA_COUNTER=6 AND Q.PHRVAA_DRUG_CODE=\'2BAC001\';"
+            dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
+            conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
+            q="SELECT UNIQUE(Q.PHRVAA_ST_QTY)  FROM \"PAO\".\"PHRVAH_DRUG_NAME_VIEW\" P , \"PAO\".\"PHRVAA_DRUG_MASTER_VIEW\" Q WHERE P.PHRVAA_DRUG_CODE = Q.PHRVAA_DRUG_CODE AND Q.PHRVAA_COUNTER=6 AND Q.PHRVAA_DRUG_CODE=\'2BAC001\'"
+            with conn.cursor() as cursor:
+                cursor.execute(q)
+                from pandas import DataFrame
+                dxf = DataFrame(cursor.fetchall())
+                dxf.columns = [x[0] for x in cursor.description]
+                print("I got %d lines " % len(dxf))
+            print(q)
+            n=dxf.PHRVAA_ST_QTY[0]
+            ord.current_quantity = n
             ord.demand = demand
             ord.rol= rol
             
@@ -341,6 +415,7 @@ def ml_predict(request):
 
     else:
         return render(request, "login.html")
+    
 
 def cals1drug(dcode,cno,request):
         
@@ -450,7 +525,7 @@ def cals1drug(dcode,cno,request):
         for date in date_generated:
             d2.append(date.strftime("%d-%m-%Y"))
 
-        # pred_test_set_inverted #not sure
+        # pred_test_set_inverted 
         len(pred_test_set_inverted)
 
         len(d2)
@@ -513,20 +588,35 @@ def cals1drug(dcode,cno,request):
             print("Please request central store to place an order for drug code : "+str(dcode)+" , demand per month : "+str(avgsales)+" since the current stock is "+str(cstock)+" units , which is less than the re-order level"+str(math.floor(rol)))
             msg="Please request central store to place an order for drug code : "+str(dcode)+" , demand per month : "+str(avgsales)+" since the current stock is "+str(cstock)+" units , which is less than the re-order level"+str(math.floor(rol))
 
-        new_msg = Messages()
-        new_msg.message = msg
-        if cno == 6:
-            new_msg.from_user = cno
-        else:
-            new_msg.from_user = request.user.first_name
-        new_msg.to_user = cno
-        new_msg.time = datetime.date.today()
-        new_msg.drug_code = str(dcode)
-        new_msg.current_quantity = str(cstock)
-        new_msg.demand = str(avgsales)
-        new_msg.proposed_order_quantity = str(math.floor(rol))
-        new_msg.save()
-        print("ALERT SENT!!!")
+            new_msg = Messages()
+            new_msg.message = msg
+            if cno == 6:
+                new_msg.from_user = cno
+            else:
+                new_msg.from_user = request.user.first_name
+            dsn_tns = cx_Oracle.makedsn('172.17.100.250', '1521', 'POCDB12C')
+            conn = cx_Oracle.connect(user='PAO', password='PAO', dsn=dsn_tns)
+            # q="select PHRVAD_BILL_DATE , sum(phrvad_sal_qty) from \"PAO\".\"PHRVAD_FOOT_FALLX\" where phrvad_counter_no=4 and phrvad_drug_code='ATRO006' group by PHRVAD_BILL_DATE order by TO_DATE(phrvad_bill_date, 'dd-mm-yyyy')"
+            q="select UNIQUE(PHRVAA_DRUG_NAME) FROM PHRVAH_DRUG_NAME_VIEW WHERE phrvaa_drug_code='"+dcode+"'"
+
+            with conn.cursor() as cursor:
+                cursor.execute(q)
+                from pandas import DataFrame
+                dxf = DataFrame(cursor.fetchall())
+                dxf.columns = [x[0] for x in cursor.description]
+                print("I got %d lines " % len(dxf))
+            str(dxf)
+            new_msg.to_user = cno
+
+            new_msg.time = datetime.date.today()
+            new_msg.drug_code = str(dcode)
+            new_msg.drug_name=str(dxf)
+            print("\n\n\n-----\n",str(dxf),"\n---\n\n\n")
+            new_msg.current_quantity = str(cstock)
+            new_msg.demand = str(avgsales)
+            new_msg.rol = str(math.floor(rol))
+            new_msg.save()
+            print("ALERT SENT!!!")
         # if cno!=6:
         #     q="select PHRVAF_CURR_QTY from \"PAO\".\"PHRVAF_STOCK_ANALYSIS_COUNTER\" where PHRVAF_DRUG_CODE='"+dcode+"' and PHRVAF_COUNT_NO="+str(cno)
         #     with conn.cursor() as cursor:

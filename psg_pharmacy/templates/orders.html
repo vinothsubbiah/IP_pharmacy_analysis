@@ -61,6 +61,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'alerts' %}"><i class="fa fa-bell"></i><span>Alerts</span></a></li>
                     {% if  request.user.username == "store_pharmacy" %}
                     <li class="nav-item"><a class="nav-link active" href="{% url 'orders' %}"><i class="fa fa-bell"></i><span>Orders</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'Drug_Logistics' %}"><i class="fa fa-bell"></i><span>Drug Logistics</span></a></li>
                     {% endif %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'details' %}"><i class="fas fa-table"></i><span>View Details</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'requests' %}"><i class="fas fa-window-maximize"></i><span>Requests</span></a><a class="nav-link" href="{% url 'signout' %}"><i class="far fa-user-circle"></i><span>Logout</span></a></li>

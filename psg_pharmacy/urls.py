@@ -17,6 +17,7 @@ urlpatterns = [
     path('alerts/', views.alerts, name='alerts'),
     path('mailCompose/', views.mailCompose, name='mailCompose'),
     path('sendMail/', views.sendMail, name='sendMail'),
+    path('Drug_Logistics/', views.Drug_Logistics, name='Drug_Logistics'),
     #path('alerts_info/', views.alerts_info, name='alerts_info'),
     path('signout',views.signout,name='signout'),
     ]
